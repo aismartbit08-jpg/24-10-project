@@ -69,8 +69,8 @@ export default function AdminSystemSettings({ isSubAdmin, adminUserId }: { isSub
     for (const [key, value] of Object.entries(settings)) {
       const adminId = isSubAdmin ? adminUserId : null;
       const { error } = await supabase.from('system_settings').upsert(
-        { key, value, admin_id: adminId ?? undefined, updated_at: new Date().toISOString() },
-        { onConflict: 'key' }
+        { key, value, admin_id: adminId, updated_at: new Date().toISOString() },
+        { onConflict: 'admin_id,key' }
       );
       if (error) { console.error(`Failed to save setting ${key}:`, error.message); failed = true; }
     }
